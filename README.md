@@ -27,10 +27,10 @@ Responzo takes the pain out of creating responsive React Native apps by providin
 
 ```bash
 # Using npm
-npm install react-native-responzo react-native-device-info
+npm install @ganesh1011/react-native-responzo react-native-device-info
 
 # Using Yarn
-yarn add react-native-responzo react-native-device-info
+yarn add @ganesh1011/react-native-responzo react-native-device-info
 ```
 
 ### 🔗 Peer Dependencies
