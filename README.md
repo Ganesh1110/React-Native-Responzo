@@ -165,4 +165,4 @@ We welcome contributions! Please see our `CONTRIBUTING.md` for details.
 
 ## 📜 License
 
-MIT © Your Name
+MIT © Ganesh Jayaprakash

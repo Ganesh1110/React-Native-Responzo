@@ -1,2 +1,6 @@
 src/
+.babelrc
 babel.config.js
+*.log
+*.md~
+node_modules/
