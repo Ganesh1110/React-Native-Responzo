@@ -1,0 +1,38 @@
+{
+  "name": "react-native-responzo",
+  "version": "1.0.0",
+  "description": "A lightweight, adaptive scaling utility for React Native apps to handle responsive layouts, fonts, and device-specific quirks (notch, tablets, etc.)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ganesh1110/React-Native-Responzo.git"
+  },
+  "keywords": [
+    "react-native",
+    "responsive",
+    "scaling",
+    "layout",
+    "adaptive",
+    "notch",
+    "tablet"
+  ],
+  "author": "Ganesh Jayaprakash",
+  "license": "ISC",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "bugs": {
+    "url": "https://github.com/Ganesh1110/React-Native-Responzo/issues"
+  },
+  "homepage": "https://github.com/Ganesh1110/React-Native-Responzo#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2"
+  }
+}
