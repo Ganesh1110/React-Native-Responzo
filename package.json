@@ -1,6 +1,6 @@
 {
   "name": "react-native-responzo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight, adaptive scaling utility for React Native apps to handle responsive layouts, fonts, and device-specific quirks (notch, tablets, etc.)",
   "main": "index.js",
   "scripts": {
