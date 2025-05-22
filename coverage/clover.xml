@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747889553365" clover="3.2.0">
-  <project timestamp="1747889553365" name="All files">
+<coverage generated="1747901340706" clover="3.2.0">
+  <project timestamp="1747901340706" name="All files">
     <metrics statements="24" coveredstatements="23" conditionals="16" coveredconditionals="10" methods="5" coveredmethods="5" elements="45" coveredelements="38" complexity="0" loc="24" ncloc="24" packages="1" files="1" classes="1"/>
     <file name="index.js" path="/Users/ganeshjayaprakash/WorkSpace/Mine/npm_plugin/React-Native-Responzo/src/index.js">
       <metrics statements="24" coveredstatements="23" conditionals="16" coveredconditionals="10" methods="5" coveredmethods="5"/>

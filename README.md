@@ -51,7 +51,7 @@ yarn add @ganesh1011/react-native-responzo react-native-device-info
 ### 1. Smart Dimension Scaling
 
 ```js
-import { widthPercent, heightPercent } from "react-native-responzo";
+import { widthPercent, heightPercent } from "@ganesh1011/react-native-responzo";
 
 const buttonWidth = widthPercent(10); // 10% of screen width
 const cardHeight = heightPercent(15); // 15% of screen height (excluding status bar)
@@ -60,7 +60,7 @@ const cardHeight = heightPercent(15); // 15% of screen height (excluding status 
 ### 2. Adaptive Font Sizing
 
 ```js
-import { scaledFontSize } from "react-native-responzo";
+import { scaledFontSize } from "@ganesh1011/react-native-responzo";
 
 const headingSize = scaledFontSize(24); // Based on device height
 const bodySize = scaledFontSize(16);
@@ -69,7 +69,11 @@ const bodySize = scaledFontSize(16);
 ### 3. Device Intelligence
 
 ```js
-import { isTablet, hasNotch, statusBarHeight } from "react-native-responzo";
+import {
+  isTablet,
+  hasNotch,
+  statusBarHeight,
+} from "@ganesh1011/react-native-responzo";
 
 console.log(`Is tablet: ${isTablet}`);
 console.log(`Has notch: ${hasNotch}`);
@@ -107,7 +111,7 @@ console.log(`Status bar height: ${statusBarHeight}px`);
 ### Responsive Card Component
 
 ```js
-import Responsive from "react-native-responzo";
+import Responsive from "@ganesh1011/react-native-responzo";
 
 const Card = () => (
   <View
@@ -128,7 +132,7 @@ const Card = () => (
 ### Device-Specific Layout
 
 ```js
-import { isTablet, widthPercent } from "react-native-responzo";
+import { isTablet, widthPercent } from "@ganesh1011/react-native-responzo";
 
 const columns = isTablet ? 3 : 2;
 const itemWidth = widthPercent(isTablet ? 30 : 45);
