@@ -2,10 +2,14 @@
 
 ### The Ultimate Responsive Design Toolkit for React Native
 
-[![npm version](https://img.shields.io/npm/v/react-native-responzo?color=61dafb&logo=npm)](https://npmjs.com/package/react-native-responzo)  
+[![npm version](https://img.shields.io/npm/v/@ganesh1011/react-native-responzo?color=61dafb&logo=npm)](https://www.npmjs.com/package/@ganesh1011/react-native-responzo)  
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)  
 [![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-lightgrey)]()  
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/react-native-responzo?label=size)]()
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@ganesh1011/react-native-responzo?label=size)]()
+[![Tests](https://img.shields.io/badge/tests-10%20passed%2F10-brightgreen)]()
+[![Coverage](https://img.shields.io/badge/coverage-96.15%25-brightgreen)]()
+[![Functions](https://img.shields.io/badge/functions-100%25-brightgreen)]()
+[![Lines](https://img.shields.io/badge/lines-95.83%25-brightgreen)]()
 
 <!-- ![Responzo Hero Banner](./screenshots/banner.png)
 *(Example screenshot showing responsive layouts across devices)* -->

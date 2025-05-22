@@ -29,7 +29,9 @@ const getStatusBarHeight = () => {
 };
 
 const statusBarHeight = getStatusBarHeight();
-const availableHeight = deviceHeight - statusBarHeight;
+
+// ✅ Clamp availableHeight to non-negative value
+const availableHeight = Math.max(0, deviceHeight - statusBarHeight);
 
 /**
  * Calculate width as a percentage of device width.
