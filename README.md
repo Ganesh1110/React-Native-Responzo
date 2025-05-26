@@ -184,4 +184,5 @@ We welcome contributions! Please see our `CONTRIBUTING.md` for details.
 
 ## 📜 License
 
-MIT © Ganesh Jayaprakash
+MIT © 2023 Ganesh Jayaprakash  
+See the [LICENSE](./LICENSE) file for full details.
