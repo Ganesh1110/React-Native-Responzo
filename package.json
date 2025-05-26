@@ -27,7 +27,8 @@
   "license": "ISC",
   "files": [
     "lib",
-    "dist"
+    "dist",
+    "README.md"
   ],
   "bugs": {
     "url": "https://github.com/Ganesh1110/React-Native-Responzo/issues"
