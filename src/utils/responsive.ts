@@ -17,7 +17,7 @@ const getStatusBarHeight = (): number => {
 };
 
 const statusBarHeight = getStatusBarHeight();
-const availableHeight = deviceHeight - statusBarHeight;
+const availableHeight = Math.max(0, deviceHeight - statusBarHeight);
 
 export const widthPercent = (percent: number): number => (deviceWidth * percent) / 100;
 export const heightPercent = (percent: number): number => (availableHeight * percent) / 100;

@@ -1,5 +1,5 @@
 jest.mock("react-native-device-info", () => ({
-  isTablet: () => false,
-  hasNotch: () => false,
-  hasDynamicIsland: () => false,
+  isTablet: jest.fn(() => false),
+  hasNotch: jest.fn(() => false),
+  getStatusBarHeight: jest.fn(() => 20),
 }));

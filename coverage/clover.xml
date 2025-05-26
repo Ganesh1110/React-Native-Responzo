@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1748247414017" clover="3.2.0">
-  <project timestamp="1748247414017" name="All files">
-    <metrics statements="42" coveredstatements="0" conditionals="32" coveredconditionals="0" methods="13" coveredmethods="0" elements="87" coveredelements="0" complexity="0" loc="42" ncloc="42" packages="2" files="3" classes="3"/>
+<coverage generated="1748248661538" clover="3.2.0">
+  <project timestamp="1748248661538" name="All files">
+    <metrics statements="42" coveredstatements="22" conditionals="32" coveredconditionals="14" methods="13" coveredmethods="5" elements="87" coveredelements="41" complexity="0" loc="42" ncloc="42" packages="2" files="3" classes="3"/>
     <package name="src">
       <metrics statements="20" coveredstatements="0" conditionals="16" coveredconditionals="0" methods="8" coveredmethods="0"/>
       <file name="index.ts" path="/Users/ganeshjayaprakash/WorkSpace/Mine/npm_plugin/React-Native-Responzo/src/index.ts">
@@ -32,31 +32,31 @@
       </file>
     </package>
     <package name="src.utils">
-      <metrics statements="22" coveredstatements="0" conditionals="16" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <metrics statements="22" coveredstatements="22" conditionals="16" coveredconditionals="14" methods="5" coveredmethods="5"/>
       <file name="responsive.ts" path="/Users/ganeshjayaprakash/WorkSpace/Mine/npm_plugin/React-Native-Responzo/src/utils/responsive.ts">
-        <metrics statements="22" coveredstatements="0" conditionals="16" coveredconditionals="0" methods="5" coveredmethods="0"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="16" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="25" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="30" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="31" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="38" count="0" type="stmt"/>
+        <metrics statements="22" coveredstatements="22" conditionals="16" coveredconditionals="14" methods="5" coveredmethods="5"/>
+        <line num="4" count="9" type="stmt"/>
+        <line num="5" count="9" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="10" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="16" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="19" count="9" type="stmt"/>
+        <line num="20" count="9" type="stmt"/>
+        <line num="22" count="9" type="stmt"/>
+        <line num="23" count="9" type="stmt"/>
+        <line num="25" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="30" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="31" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="38" count="9" type="stmt"/>
       </file>
     </package>
   </project>
