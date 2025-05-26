@@ -485,8 +485,8 @@ npm run build
 ## 📞 Contact & Support
 
 - **Email**: [ganeshjayaprakash3@gmail.com](mailto:ganeshjayaprakash3@gmail.com)
-- **GitHub Issues**: [Report bugs or request features](https://github.com/ganesh1011/react-native-responzo/issues)
-- **Discussions**: [Join our community discussions](https://github.com/ganesh1011/react-native-responzo/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/Ganesh1110/React-Native-Responzo/issues)
+- **Discussions**: [Join our community discussions](https://github.com/Ganesh1110/React-Native-Responzo/discussions)
 
 ## 📄 License
 
