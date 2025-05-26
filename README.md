@@ -6,10 +6,10 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)  
 [![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-lightgrey)]()  
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/@ganesh1011/react-native-responzo?label=size)]()
-[![Tests](https://img.shields.io/badge/tests-10%20passed%2F10-brightgreen)]()
-[![Coverage](https://img.shields.io/badge/coverage-96.15%25-brightgreen)]()
-[![Functions](https://img.shields.io/badge/functions-100%25-brightgreen)]()
-[![Lines](https://img.shields.io/badge/lines-95.83%25-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-18%20passed%2F18-brightgreen)]()
+[![Coverage](https://img.shields.io/badge/coverage-48.97%25-yellow)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-supported-blue)]()
+[![JavaScript](https://img.shields.io/badge/JavaScript-supported-yellow)]()
 
 <!-- ![Responzo Hero Banner](./screenshots/banner.png)
 *(Example screenshot showing responsive layouts across devices)* -->
@@ -102,6 +102,20 @@ console.log(`Status bar height: ${statusBarHeight}px`);
 
 ---
 
+## � TypeScript Usage
+
+```ts
+import { widthPercent, isTablet } from "react-native-responzo";
+
+const responsiveButtonStyle: {
+  width: number;
+  padding: number;
+} = {
+  width: widthPercent(80),
+  padding: isTablet ? 20 : 15,
+};
+```
+
 ## 🎨 Usage Examples
 
 ### Responsive Card Component
@@ -143,6 +157,7 @@ const itemWidth = widthPercent(isTablet ? 30 : 45);
 | Notch Detection  | ✅ Yes           | ❌ No                          | ❌ No                     |
 | Tablet Detection | ✅ Yes           | ❌ No                          | ❌ No                     |
 | Font Scaling     | ✅ Smart scaling | ✅ Basic scaling               | ✅ Basic scaling          |
+| TypeScript       | ✅ Full support  | ❌ Partial                     | ❌ No                     |
 | Performance      | ⚡ Lightweight   | ⚡ Lightweight                 | ⚡ Lightweight            |
 | Maintenance      | 🆕 Active        | 🕒 Less active                 | 🕒 Less active            |
 
@@ -157,15 +172,15 @@ A: All dimensions are recalculated dynamically when orientation changes.
 A: Yes! Functions like `scaledFontSize` accept optional `baseHeight` params.
 
 **Q: Is TypeScript supported?**  
-A: Absolutely. Full TypeScript definitions are included.
+A: Absolutely! The package includes complete TypeScript definitions and has been thoroughly tested with both JavaScript and TypeScript projects.
 
 ---
 
-## 🤝 Contributing
+<!-- ## 🤝 Contributing
 
 We welcome contributions! Please see our `CONTRIBUTING.md` for details.
 
----
+--- -->
 
 ## 📜 License
 
