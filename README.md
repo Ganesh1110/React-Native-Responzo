@@ -500,7 +500,7 @@ See the [LICENSE](./LICENSE) file for full details.
 
 <div align="center">
 
-**[⭐ Star us on GitHub](https://github.com/ganesh1011/react-native-responzo)** • **[📦 npm Package](https://www.npmjs.com/package/@ganesh1011/react-native-responzo)** • **[🐛 Report Issues](https://github.com/ganesh1011/react-native-responzo/issues)**
+**[⭐ Star us on GitHub](https://github.com/Ganesh1110/React-Native-Responzo)** • **[📦 npm Package](https://www.npmjs.com/package/@ganesh1011/react-native-responzo)** • **[🐛 Report Issues](https://github.com/Ganesh1110/React-Native-Responzo/issues)**
 
 Made with 💙 by [Ganesh Jayaprakash](https://github.com/ganesh1011)
 
