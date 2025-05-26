@@ -1,271 +1,273 @@
-import { Dimensions, Platform, PixelRatio, StatusBar } from "react-native";
+// __tests__/responsive.test.ts
+import { Platform, Dimensions, StatusBar, PixelRatio } from 'react-native';
 
-describe("Responsive Utility Module - Full Coverage", () => {
-  const resetModulesAndMocks = () => {
-    jest.resetModules();
-  };
+// Mock react-native modules
+jest.mock('react-native', () => ({
+  Platform: { OS: 'ios' },
+  Dimensions: {
+    get: jest.fn(() => ({ width: 375, height: 812 }))
+  },
+  StatusBar: {
+    currentHeight: 0
+  },
+  PixelRatio: {
+    get: jest.fn(() => 3)
+  }
+}));
 
-  it("should calculate statusBarHeight correctly on android with StatusBar.currentHeight", () => {
-    resetModulesAndMocks();
+// Mock react-native-device-info
+jest.mock('react-native-device-info', () => ({
+  isTablet: jest.fn(() => false),
+  hasNotch: jest.fn(() => false),
+  hasDynamicIsland: jest.fn(() => false)
+}));
 
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "android" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 400, height: 800 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 2),
-      },
-      StatusBar: {
-        currentHeight: 25,
-      },
-    }));
+import DeviceInfo from 'react-native-device-info';
+import {
+  deviceWidth,
+  deviceHeight,
+  pixelDensity,
+  isTablet,
+  hasNotch,
+  statusBarHeight,
+  availableHeight,
+  widthPercent,
+  heightPercent,
+  moderateWidth,
+  scaledFontSize
+} from '../src/responsive';
 
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => false),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
-
-    const Responsive = require("../src/utils/responsive").default;
-
-    expect(Responsive.statusBarHeight).toBe(25);
-    expect(Responsive.availableHeight).toBe(800 - 25);
+describe('React Native Responzo', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Reset to default values
+    (Dimensions.get as jest.Mock).mockReturnValue({ width: 375, height: 812 });
+    (DeviceInfo.isTablet as jest.Mock).mockReturnValue(false);
+    (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+    (DeviceInfo.hasDynamicIsland as jest.Mock).mockReturnValue(false);
+    (Platform as any).OS = 'ios';
   });
 
-  it("should handle iOS with notch and dynamic island", () => {
-    resetModulesAndMocks();
+  describe('Device Properties', () => {
+    it('should return correct device dimensions', () => {
+      expect(deviceWidth()).toBe(375); // min(375, 812)
+      expect(deviceHeight()).toBe(812); // max(375, 812)
+    });
 
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 375, height: 812 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 3),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
+    it('should return correct pixel density', () => {
+      expect(pixelDensity()).toBe(3);
+    });
 
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => true),
-      hasDynamicIsland: jest.fn(() => true),
-    }));
+    it('should detect tablet correctly', () => {
+      expect(isTablet()).toBe(false);
+      
+      (DeviceInfo.isTablet as jest.Mock).mockReturnValue(true);
+      expect(isTablet()).toBe(true);
+    });
 
-    const Responsive = require("../src/utils/responsive").default;
-
-    expect(Responsive.statusBarHeight).toBe(54);
-    expect(Responsive.availableHeight).toBe(812 - 54);
+    it('should detect notch correctly', () => {
+      expect(hasNotch()).toBe(false);
+      
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(true);
+      expect(hasNotch()).toBe(true);
+    });
   });
 
-  it("should handle iOS with notch but without dynamic island", () => {
-    resetModulesAndMocks();
+  describe('Status Bar Height', () => {
+    it('should return 20 for iOS without notch', () => {
+      (Platform as any).OS = 'ios';
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+      
+      expect(statusBarHeight()).toBe(20);
+    });
 
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 375, height: 812 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 3),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
+    it('should return 44 for iOS with notch but no dynamic island', () => {
+      (Platform as any).OS = 'ios';
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(true);
+      (DeviceInfo.hasDynamicIsland as jest.Mock).mockReturnValue(false);
+      
+      expect(statusBarHeight()).toBe(44);
+    });
 
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => true),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
+    it('should return 54 for iOS with dynamic island', () => {
+      (Platform as any).OS = 'ios';
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(true);
+      (DeviceInfo.hasDynamicIsland as jest.Mock).mockReturnValue(true);
+      
+      expect(statusBarHeight()).toBe(54);
+    });
 
-    const Responsive = require("../src/utils/responsive").default;
+    it('should return StatusBar.currentHeight for Android', () => {
+      (Platform as any).OS = 'android';
+      (StatusBar as any).currentHeight = 25;
+      
+      expect(statusBarHeight()).toBe(25);
+    });
 
-    expect(Responsive.statusBarHeight).toBe(44);
-    expect(Responsive.availableHeight).toBe(812 - 44);
+    it('should return 0 for Android when StatusBar.currentHeight is null', () => {
+      (Platform as any).OS = 'android';
+      (StatusBar as any).currentHeight = null;
+      
+      expect(statusBarHeight()).toBe(0);
+    });
   });
 
-  it("should handle iOS without notch", () => {
-    resetModulesAndMocks();
+  describe('Available Height', () => {
+    it('should calculate available height correctly', () => {
+      (Platform as any).OS = 'ios';
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+      
+      const expected = 812 - 20; // deviceHeight - statusBarHeight
+      expect(availableHeight()).toBe(expected);
+    });
 
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 375, height: 667 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 2),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
-
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => false),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
-
-    const Responsive = require("../src/utils/responsive").default;
-
-    expect(Responsive.statusBarHeight).toBe(20);
-    expect(Responsive.availableHeight).toBe(667 - 20);
+    it('should handle zero dimensions gracefully', () => {
+      (Dimensions.get as jest.Mock).mockReturnValue({ width: 0, height: 0 });
+      
+      expect(availableHeight()).toBeGreaterThanOrEqual(0);
+    });
   });
 
-  it("should detect tablet and scale font accordingly", () => {
-    resetModulesAndMocks();
+  describe('Responsive Functions', () => {
+    beforeEach(() => {
+      (Dimensions.get as jest.Mock).mockReturnValue({ width: 400, height: 800 });
+      (Platform as any).OS = 'ios';
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+    });
 
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 800, height: 1200 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 3),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
+    it('should calculate width percentage correctly', () => {
+      expect(widthPercent(50)).toBe(200); // 50% of 400
+      expect(widthPercent(100)).toBe(400);
+      expect(widthPercent(0)).toBe(0);
+    });
 
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => true),
-      hasNotch: jest.fn(() => true),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
+    it('should handle invalid width percentages', () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      
+      expect(widthPercent(-10)).toBe(0);
+      expect(widthPercent(150)).toBe(0);
+      
+      expect(consoleSpy).toHaveBeenCalledTimes(2);
+      consoleSpy.mockRestore();
+    });
 
-    const Responsive = require("../src/utils/responsive").default;
+    it('should calculate height percentage correctly', () => {
+      const available = 800 - 20; // height - statusBar
+      expect(heightPercent(50)).toBe(available * 0.5);
+      expect(heightPercent(100)).toBe(available);
+      expect(heightPercent(0)).toBe(0);
+    });
 
-    expect(Responsive.isTablet).toBe(true);
-    // Test scaledFontSize for tablet (should add 2 to fontSize)
-    const baseFont = 14;
-    const expectedAdjustedFont = baseFont + 2;
-    const expectedHeightScale = (expectedAdjustedFont * Responsive.availableHeight) / 812;
+    it('should handle invalid height percentages', () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      
+      expect(heightPercent(-10)).toBe(0);
+      expect(heightPercent(150)).toBe(0);
+      
+      expect(consoleSpy).toHaveBeenCalledTimes(2);
+      consoleSpy.mockRestore();
+    });
 
-    expect(Responsive.scaledFontSize(baseFont)).toBeCloseTo(expectedHeightScale, 2);
+    it('should calculate moderate width correctly', () => {
+      // deviceWidth = 400, scale = 400/375 ≈ 1.067
+      const size = 100;
+      const scale = 400 / 375;
+      const expected = size + (scale * size - size) * 0.5;
+      
+      expect(moderateWidth(size)).toBeCloseTo(expected, 2);
+    });
+
+    it('should handle custom factor in moderate width', () => {
+      const size = 100;
+      const factor = 1;
+      const scale = 400 / 375;
+      const expected = size + (scale * size - size) * factor;
+      
+      expect(moderateWidth(size, factor)).toBeCloseTo(expected, 2);
+    });
+
+    it('should handle invalid size in moderate width', () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      
+      expect(moderateWidth(-10)).toBe(0);
+      expect(moderateWidth(NaN)).toBe(0);
+      
+      expect(consoleSpy).toHaveBeenCalledTimes(2);
+      consoleSpy.mockRestore();
+    });
   });
 
-  it("should calculate widthPercent and heightPercent correctly", () => {
-    resetModulesAndMocks();
+  describe('Scaled Font Size', () => {
+    beforeEach(() => {
+      (Dimensions.get as jest.Mock).mockReturnValue({ width: 375, height: 812 });
+      (DeviceInfo.isTablet as jest.Mock).mockReturnValue(false);
+      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+    });
 
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 400, height: 800 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 3),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
+    it('should scale font for regular phone correctly', () => {
+      const fontSize = 16;
+      const scale = 375 / 375; // 1
+      const expected = Number((scale * fontSize).toFixed(2));
+      
+      expect(scaledFontSize(fontSize)).toBe(expected);
+    });
 
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => false),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
+    it('should add 2px for tablet fonts', () => {
+      (DeviceInfo.isTablet as jest.Mock).mockReturnValue(true);
+      
+      const fontSize = 16;
+      const adjustedFont = fontSize + 2;
+      const available = 812 - 20; // availableHeight
+      const heightScale = (adjustedFont * available) / 812;
+      const expected = Number(heightScale.toFixed(2));
+      
+      expect(scaledFontSize(fontSize)).toBe(expected);
+    });
 
-    const Responsive = require("../src/utils/responsive").default;
+    it('should use height scaling for wide screens', () => {
+      (Dimensions.get as jest.Mock).mockReturnValue({ width: 600, height: 900 });
+      
+      const fontSize = 16;
+      const available = 900 - 20;
+      const heightScale = (fontSize * available) / 812;
+      const expected = Number(heightScale.toFixed(2));
+      
+      expect(scaledFontSize(fontSize)).toBe(expected);
+    });
 
-    expect(Responsive.widthPercent(50)).toBe(200);
-    expect(Responsive.heightPercent(50)).toBe((800 - 20) * 0.5); // statusBarHeight defaults to 20 on iOS without notch
+    it('should handle invalid font sizes', () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      
+      expect(scaledFontSize(0)).toBe(14); // fallback
+      expect(scaledFontSize(-5)).toBe(14); // fallback
+      expect(scaledFontSize(NaN)).toBe(14); // fallback
+      
+      expect(consoleSpy).toHaveBeenCalledTimes(3);
+      consoleSpy.mockRestore();
+    });
+
+    it('should use custom base height', () => {
+      const fontSize = 16;
+      const customBase = 1000;
+      const available = 812 - 20;
+      const scale = 375 / 375; // 1 (not tablet, deviceWidth <= 500)
+      const expected = Number((scale * fontSize).toFixed(2));
+      
+      expect(scaledFontSize(fontSize, customBase)).toBe(expected);
+    });
   });
 
-  it("should calculate moderateWidth with default factor", () => {
-    resetModulesAndMocks();
-
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 375, height: 812 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 3),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
-
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => true),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
-
-    const Responsive = require("../src/utils/responsive").default;
-
-    // deviceWidth == 375 so scale == 1, so moderateWidth(size) = size
-    expect(Responsive.moderateWidth(20)).toBe(20);
-    // with factor = 1, should scale fully
-    expect(Responsive.moderateWidth(20, 1)).toBeCloseTo(20 * (375 / 375));
-  });
-
-  it("should calculate scaledFontSize correctly for non-tablet with large deviceWidth", () => {
-    resetModulesAndMocks();
-
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 600, height: 900 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 3),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
-
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => false),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
-
-    const Responsive = require("../src/utils/responsive").default;
-
-    const fontSize = 16;
-    const adjustedFont = fontSize; // not tablet
-    const heightScale = (adjustedFont * Responsive.availableHeight) / 812;
-    // Because deviceWidth > 500, scaledFontSize returns heightScale (rounded)
-    expect(Responsive.scaledFontSize(fontSize)).toBeCloseTo(Number(heightScale.toFixed(2)));
-  });
-
-  it("should handle zero width/height gracefully", () => {
-    resetModulesAndMocks();
-
-    jest.doMock("react-native", () => ({
-      Platform: { OS: "ios" },
-      Dimensions: {
-        get: jest.fn(() => ({ width: 0, height: 0 })),
-      },
-      PixelRatio: {
-        get: jest.fn(() => 1),
-      },
-      StatusBar: {
-        currentHeight: 0,
-      },
-    }));
-
-    jest.doMock("react-native-device-info", () => ({
-      isTablet: jest.fn(() => false),
-      hasNotch: jest.fn(() => false),
-      hasDynamicIsland: jest.fn(() => false),
-    }));
-
-    const Responsive = require("../src/utils/responsive").default;
-
-    expect(Responsive.deviceWidth).toBe(0);
-    expect(Responsive.deviceHeight).toBe(0);
-    expect(Responsive.widthPercent(50)).toBe(0);
-    expect(Responsive.heightPercent(50)).toBe(0);
+  describe('Orientation Changes', () => {
+    it('should update dimensions when orientation changes', () => {
+      // Start with portrait
+      (Dimensions.get as jest.Mock).mockReturnValue({ width: 375, height: 812 });
+      expect(deviceWidth()).toBe(375);
+      expect(deviceHeight()).toBe(812);
+      
+      // Switch to landscape
+      (Dimensions.get as jest.Mock).mockReturnValue({ width: 812, height: 375 });
+      expect(deviceWidth()).toBe(375); // still min
+      expect(deviceHeight()).toBe(812); // still max
+    });
   });
 });
