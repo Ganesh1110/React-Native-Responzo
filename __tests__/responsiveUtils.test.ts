@@ -34,8 +34,19 @@ import {
   widthPercent,
   heightPercent,
   moderateWidth,
-  scaledFontSize
+  scaledFontSize,
+  scaleWidth as sw,
+  scaleHeight as sh,
+  scaleFont as sf,
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+  scaleWidth,
+  scaleHeight,
+  scaleFont,
+  widthPercentageToDP,
+  heightPercentageToDP,
 } from '../src/responsive';
+import Responsive from '../src/responsive'; 
 
 describe('React Native Responzo', () => {
   beforeEach(() => {
@@ -270,4 +281,27 @@ describe('React Native Responzo', () => {
       expect(deviceHeight()).toBe(812); // still max
     });
   });
+
+  describe('Responsive Object Aliases and Exports', () => {
+  it('should expose shortcut functions correctly', () => {
+    expect(sw(100)).toBe(scaleWidth(100));
+    expect(sh(100)).toBe(scaleHeight(100));
+    expect(sf(16)).toBe(scaleFont(16));
+    expect(wp(50)).toBe(widthPercentageToDP(50));
+    expect(hp(50)).toBe(heightPercentageToDP(50));
+  });
+
+  });
+
+  describe('Responsive Object getters', () => {
+  it('should access all getter properties without errors', () => {
+    expect(typeof Responsive.width).toBe('number');
+    expect(typeof Responsive.height).toBe('number');
+    expect(typeof Responsive.pixelRatio).toBe('number');
+    expect(typeof Responsive.isTablet).toBe('boolean');
+    expect(typeof Responsive.hasNotch).toBe('boolean');
+    expect(typeof Responsive.statusBarHeight).toBe('number');
+    expect(typeof Responsive.screenHeight).toBe('number');
+  });
+});
 });
