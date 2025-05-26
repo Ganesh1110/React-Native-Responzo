@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for responsive.ts</title>
+    <title>Code coverage report for src/utils/responsive.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="prettify.css" />
-    <link rel="stylesheet" href="base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> responsive.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utils</a> responsive.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/31</span>
+                <span class='fraction'>0/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -115,22 +115,7 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -138,6 +123,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -166,9 +166,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { Dimensions, Platform, PixelRatio, StatusBar } from 'react-native';</span>
-<span class="cstat-no" title="statement not covered" >import DeviceInfo from 'react-native-device-info';</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Dimensions, Platform, PixelRatio, StatusBar } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 &nbsp;
 const { width, height } = <span class="cstat-no" title="statement not covered" >Dimensions.get('window');</span>
 const pixelDensity = <span class="cstat-no" title="statement not covered" >PixelRatio.get();</span>
@@ -178,8 +178,8 @@ const deviceHeight = <span class="cstat-no" title="statement not covered" >Math.
 const isTablet = <span class="cstat-no" title="statement not covered" >DeviceInfo.isTablet();</span>
 const hasNotch = <span class="cstat-no" title="statement not covered" >DeviceInfo.hasNotch();</span>
 &nbsp;
-const getStatusBarHeight = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): number =</span>&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (Platform.OS === 'android') {</span>
+const getStatusBarHeight = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: number =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  if (Platform.OS === 'android') {</span>
 <span class="cstat-no" title="statement not covered" >    return StatusBar.currentHeight || 0;</span>
   }
 <span class="cstat-no" title="statement not covered" >  return hasNotch ? (DeviceInfo.hasDynamicIsland?.() ? 54 : 44) : 20;</span>
@@ -188,15 +188,15 @@ const getStatusBarHeight = <span class="cstat-no" title="statement not covered" 
 const statusBarHeight = <span class="cstat-no" title="statement not covered" >getStatusBarHeight();</span>
 const availableHeight = <span class="cstat-no" title="statement not covered" >deviceHeight - statusBarHeight;</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >widthPercent = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>p</span>ercent: number): number =&gt; <span class="cstat-no" title="statement not covered" >(deviceWidth * percent) / 100;</span></span>
-export const <span class="cstat-no" title="statement not covered" >heightPercent = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>p</span>ercent: number): number =&gt; <span class="cstat-no" title="statement not covered" >(availableHeight * percent) / 100;</span></span>
+export const widthPercent = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ercent: number): number =&gt; <span class="cstat-no" title="statement not covered" >(deviceWidth * percent) / 100;</span></span>
+export const heightPercent = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ercent: number): number =&gt; <span class="cstat-no" title="statement not covered" >(availableHeight * percent) / 100;</span></span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >moderateWidth = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>s</span>ize: number, factor = <span class="branch-0 cbranch-no" title="branch not covered" >0.5)</span>: number =&gt; {</span>
+export const moderateWidth = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>ize: number, factor = <span class="branch-0 cbranch-no" title="branch not covered" >0.5)</span>: number =&gt; {</span>
   const scale = <span class="cstat-no" title="statement not covered" >deviceWidth / 375;</span>
 <span class="cstat-no" title="statement not covered" >  return size + (scale * size - size) * factor;</span>
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >scaledFontSize = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>f</span>ontSize: number, baseHeight = <span class="branch-0 cbranch-no" title="branch not covered" >812)</span>: number =&gt; {</span>
+export const scaledFontSize = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>ontSize: number, baseHeight = <span class="branch-0 cbranch-no" title="branch not covered" >812)</span>: number =&gt; {</span>
   const adjustedFont = <span class="cstat-no" title="statement not covered" >isTablet ? fontSize + 2 : fontSize;</span>
   const heightScale = <span class="cstat-no" title="statement not covered" >(adjustedFont * availableHeight) / baseHeight;</span>
 <span class="cstat-no" title="statement not covered" >  return isTablet || deviceWidth &gt; 500</span>
@@ -204,7 +204,7 @@ export const <span class="cstat-no" title="statement not covered" >scaledFontSiz
     : (deviceWidth / 375) * adjustedFont;
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >Responsive = {</span>
+export const Responsive = <span class="cstat-no" title="statement not covered" >{</span>
   deviceWidth,
   deviceHeight,
   pixelDensity,
@@ -218,7 +218,7 @@ export const <span class="cstat-no" title="statement not covered" >Responsive = 
   scaledFontSize,
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default Responsive;</span>
+export default Responsive;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -226,16 +226,16 @@ export const <span class="cstat-no" title="statement not covered" >Responsive = 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-26T05:38:41.666Z
+                at 2025-05-26T08:16:54.009Z
             </div>
-        <script src="prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="sorter.js"></script>
-        <script src="block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     
