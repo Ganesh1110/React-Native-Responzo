@@ -4,11 +4,11 @@
 
 **The Ultimate Responsive Design Toolkit for React Native**
 
-[![npm version](https://img.shields.io/npm/v/@ganesh1011/react-native-responzo?color=61dafb&logo=npm&logoColor=white)](https://www.npmjs.com/package/@ganesh1011/react-native-responzo)
+[![npm version](https://img.shields.io/npm/v/@ganesh/react-native-responzo?color=61dafb&logo=npm&logoColor=white)](https://www.npmjs.com/package/@ganesh/react-native-responzo)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-supported-blue)]()
 [![JavaScript](https://img.shields.io/badge/JavaScript-supported-yellow)]()
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@ganesh1011/react-native-responzo?label=size&color=success)](https://bundlephobia.com/package/@ganesh1011/react-native-responzo)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@ganesh/react-native-responzo?label=size&color=success)](https://bundlephobia.com/package/@ganesh/react-native-responzo)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/ganesh1011/react-native-responzo)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/ganesh1011/react-native-responzo)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A+-brightgreen)](https://github.com/ganesh1011/react-native-responzo)
@@ -31,13 +31,13 @@
 
 ```bash
 # Using npm
-npm install @ganesh1011/react-native-responzo react-native-device-info
+npm install @ganesh/react-native-responzo react-native-device-info
 
 # Using Yarn
-yarn add @ganesh1011/react-native-responzo react-native-device-info
+yarn add @ganesh/react-native-responzo react-native-device-info
 
 # Using pnpm
-pnpm add @ganesh1011/react-native-responzo react-native-device-info
+pnpm add @ganesh/react-native-responzo react-native-device-info
 ```
 
 ### iOS Setup
@@ -55,7 +55,7 @@ import {
   scaledFontSize,
   scaleWidth,
   isTablet,
-} from "@ganesh1011/react-native-responzo";
+} from "@ganesh/react-native-responzo";
 
 const styles = StyleSheet.create({
   container: {
@@ -112,7 +112,7 @@ import {
   heightPercent,
   scaledFontSize,
   scaleWidth,
-} from "@ganesh1011/react-native-responzo";
+} from "@ganesh/react-native-responzo";
 
 const ResponsiveCard = () => (
   <View style={styles.card}>
@@ -153,7 +153,7 @@ import {
   isTablet,
   hasNotch,
   statusBarHeight,
-} from "@ganesh1011/react-native-responzo";
+} from "@ganesh/react-native-responzo";
 
 const AdaptiveHeader = () => {
   const headerPadding = {
@@ -178,7 +178,7 @@ import {
   widthPercent,
   isTablet,
   scaleWidth,
-} from "@ganesh1011/react-native-responzo";
+} from "@ganesh/react-native-responzo";
 
 const ResponsiveGrid = ({ data }) => {
   const columns = isTablet() ? 3 : 2;
@@ -217,13 +217,13 @@ import {
   heightPercent,
   scaledFontSize,
   isTablet,
-} from "@ganesh1011/react-native-responzo";
+} from "@ganesh/react-native-responzo";
 ```
 
 ### Default Import
 
 ```javascript
-import Responsive from "@ganesh1011/react-native-responzo";
+import Responsive from "@ganesh/react-native-responzo";
 
 const { widthPercent, heightPercent } = Responsive;
 // Or use directly: Responsive.widthPercent(50)
@@ -238,7 +238,7 @@ import {
   scaleFont as sf,
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from "@ganesh1011/react-native-responzo";
+} from "@ganesh/react-native-responzo";
 
 const styles = {
   width: sw(100), // scaleWidth
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
 ### Custom Scaling Factors
 
 ```javascript
-import { moderateWidth } from "@ganesh1011/react-native-responzo";
+import { moderateWidth } from "@ganesh/react-native-responzo";
 
 // Default factor: 0.5 (moderate scaling)
 const normalScaling = moderateWidth(20);
@@ -374,7 +374,7 @@ const aggressiveScaling = moderateWidth(20, 0.8);
 
 ```javascript
 import { Dimensions } from "react-native";
-import { widthPercent, heightPercent } from "@ganesh1011/react-native-responzo";
+import { widthPercent, heightPercent } from "@ganesh/react-native-responzo";
 
 const [orientation, setOrientation] = useState("portrait");
 
@@ -404,11 +404,11 @@ If you encounter import errors, try these solutions:
 
 ```javascript
 // Method 1: Check available exports
-import Responzo from '@ganesh1011/react-native-responzo';
+import Responzo from '@ganesh/react-native-responzo';
 console.log('Available functions:', Object.keys(Responzo));
 
 // Method 2: Use default import
-import Responsive from '@ganesh1011/react-native-responzo';
+import Responsive from '@ganesh/react-native-responzo';
 const { widthPercent } = Responsive;
 
 // Method 3: Clear cache and reinstall
@@ -500,7 +500,7 @@ See the [LICENSE](./LICENSE) file for full details.
 
 <div align="center">
 
-**[⭐ Star us on GitHub](https://github.com/Ganesh1110/React-Native-Responzo)** • **[📦 npm Package](https://www.npmjs.com/package/@ganesh1011/react-native-responzo)** • **[🐛 Report Issues](https://github.com/Ganesh1110/React-Native-Responzo/issues)**
+**[⭐ Star us on GitHub](https://github.com/Ganesh1110/React-Native-Responzo)** • **[📦 npm Package](https://www.npmjs.com/package/@ganesh/react-native-responzo)** • **[🐛 Report Issues](https://github.com/Ganesh1110/React-Native-Responzo/issues)**
 
 Made with 💙 by [Ganesh Jayaprakash](https://github.com/ganesh1011)
 

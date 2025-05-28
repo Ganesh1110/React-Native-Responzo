@@ -1,5 +1,5 @@
 {
-  "name": "@ganesh1011/react-native-responzo",
+  "name": "@ganesh/react-native-responzo",
   "version": "1.3.4",
   "description": "A lightweight, adaptive scaling utility for React Native apps to handle responsive layouts, fonts, and device-specific quirks (notch, tablets, etc.)",
   "main": "dist/index.js",
