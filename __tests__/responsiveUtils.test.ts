@@ -1,307 +1,287 @@
-// __tests__/responsive.test.ts
-import { Platform, Dimensions, StatusBar, PixelRatio } from 'react-native';
+import { renderHook, act } from '@testing-library/react-hooks';
+import { Dimensions, PixelRatio } from 'react-native';
+import DeviceInfo from "react-native-device-info";
+import Adaptive, {
+  initAdaptive,
+  screen,
+  scale,
+  spacing,
+  typography,
+  borderRadius,
+  presets,
+  utils,
+  useAdaptive,
+} from "../src/responsive";
 
-// Mock react-native modules
-jest.mock('react-native', () => ({
-  Platform: { OS: 'ios' },
-  Dimensions: {
-    get: jest.fn(() => ({ width: 375, height: 812 }))
-  },
-  StatusBar: {
-    currentHeight: 0
-  },
-  PixelRatio: {
-    get: jest.fn(() => 3)
-  }
-}));
+// Mock Dimensions
+const mockDimensions = (width: number, height: number) => {
+  Dimensions.get = jest.fn().mockReturnValue({ width, height });
+};
 
-// Mock react-native-device-info
-jest.mock('react-native-device-info', () => ({
-  isTablet: jest.fn(() => false),
-  hasNotch: jest.fn(() => false),
-  hasDynamicIsland: jest.fn(() => false)
-}));
+// Mock PixelRatio
+const mockPixelRatio = (ratio: number) => {
+  PixelRatio.get = jest.fn().mockReturnValue(ratio);
+};
 
-import DeviceInfo from 'react-native-device-info';
-import {
-  deviceWidth,
-  deviceHeight,
-  pixelDensity,
-  isTablet,
-  hasNotch,
-  statusBarHeight,
-  availableHeight,
-  widthPercent,
-  heightPercent,
-  moderateWidth,
-  scaledFontSize,
-  scaleWidth as sw,
-  scaleHeight as sh,
-  scaleFont as sf,
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-  scaleWidth,
-  scaleHeight,
-  scaleFont,
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from '../src/responsive';
-import Responsive from '../src/responsive'; 
+// Mock DeviceInfo
+jest.mock("react-native-device-info");
 
-describe('React Native Responzo', () => {
+describe("Adaptive Scaling System", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    // Reset to default values
-    (Dimensions.get as jest.Mock).mockReturnValue({ width: 375, height: 812 });
+    // Reset to default config before each test
+    initAdaptive();
+    mockDimensions(375, 812);
+    mockPixelRatio(2);
     (DeviceInfo.isTablet as jest.Mock).mockReturnValue(false);
-    (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
-    (DeviceInfo.hasDynamicIsland as jest.Mock).mockReturnValue(false);
-    (Platform as any).OS = 'ios';
   });
 
-  describe('Device Properties', () => {
-    it('should return correct device dimensions', () => {
-      expect(deviceWidth()).toBe(375); // min(375, 812)
-      expect(deviceHeight()).toBe(812); // max(375, 812)
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("Configuration", () => {
+    it("should initialize with default config", () => {
+      expect(screen.width).toBe(375);
+      expect(screen.height).toBe(812);
+      expect(screen.isTablet).toBe(false);
     });
 
-    it('should return correct pixel density', () => {
-      expect(pixelDensity()).toBe(3);
-    });
+    it("should allow custom configuration", () => {
+      initAdaptive({
+        baseWidth: 414,
+        baseHeight: 896,
+        scalingFactor: 0.8,
+        tabletBreakpoint: 1024,
+        spacingBase: 8,
+      });
 
-    it('should detect tablet correctly', () => {
-      expect(isTablet()).toBe(false);
-      
+      expect(screen.width).toBe(375); // Still current width
+      expect(scale.width(100)).toBeCloseTo(
+        100 + ((375 / 414) * 100 - 100) * 0.8
+      );
+      expect(spacing.sm).toBeCloseTo(scale.width(16)); // 8 * 2
+    });
+  });
+
+  describe("Screen Utilities", () => {
+    it("should detect tablet devices", () => {
+      mockDimensions(1024, 768);
+      expect(screen.isTablet).toBe(true);
+
+      mockDimensions(375, 812);
       (DeviceInfo.isTablet as jest.Mock).mockReturnValue(true);
-      expect(isTablet()).toBe(true);
+      expect(screen.isTablet).toBe(true);
     });
 
-    it('should detect notch correctly', () => {
-      expect(hasNotch()).toBe(false);
-      
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(true);
-      expect(hasNotch()).toBe(true);
-    });
-  });
+    it("should detect orientation", () => {
+      mockDimensions(812, 375);
+      expect(screen.isLandscape).toBe(true);
+      expect(screen.isPortrait).toBe(false);
 
-  describe('Status Bar Height', () => {
-    it('should return 20 for iOS without notch', () => {
-      (Platform as any).OS = 'ios';
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
-      
-      expect(statusBarHeight()).toBe(20);
+      mockDimensions(375, 812);
+      expect(screen.isLandscape).toBe(false);
+      expect(screen.isPortrait).toBe(true);
     });
 
-    it('should return 44 for iOS with notch but no dynamic island', () => {
-      (Platform as any).OS = 'ios';
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(true);
-      (DeviceInfo.hasDynamicIsland as jest.Mock).mockReturnValue(false);
-      
-      expect(statusBarHeight()).toBe(44);
-    });
-
-    it('should return 54 for iOS with dynamic island', () => {
-      (Platform as any).OS = 'ios';
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(true);
-      (DeviceInfo.hasDynamicIsland as jest.Mock).mockReturnValue(true);
-      
-      expect(statusBarHeight()).toBe(54);
-    });
-
-    it('should return StatusBar.currentHeight for Android', () => {
-      (Platform as any).OS = 'android';
-      (StatusBar as any).currentHeight = 25;
-      
-      expect(statusBarHeight()).toBe(25);
-    });
-
-    it('should return 0 for Android when StatusBar.currentHeight is null', () => {
-      (Platform as any).OS = 'android';
-      (StatusBar as any).currentHeight = null;
-      
-      expect(statusBarHeight()).toBe(0);
+    it("should return pixel ratio", () => {
+      mockPixelRatio(3);
+      expect(screen.pixelRatio).toBe(3);
     });
   });
 
-  describe('Available Height', () => {
-    it('should calculate available height correctly', () => {
-      (Platform as any).OS = 'ios';
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
-      
-      const expected = 812 - 20; // deviceHeight - statusBarHeight
-      expect(availableHeight()).toBe(expected);
+  describe("Scaling Functions", () => {
+    it("should scale width proportionally", () => {
+      mockDimensions(750, 812); // Double width
+      expect(scale.width(100)).toBeCloseTo(150); // Default scaling factor 0.5
     });
 
-    it('should handle zero dimensions gracefully', () => {
-      (Dimensions.get as jest.Mock).mockReturnValue({ width: 0, height: 0 });
-      
-      expect(availableHeight()).toBeGreaterThanOrEqual(0);
-    });
-  });
-
-  describe('Responsive Functions', () => {
-    beforeEach(() => {
-      (Dimensions.get as jest.Mock).mockReturnValue({ width: 400, height: 800 });
-      (Platform as any).OS = 'ios';
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+    it("should scale height proportionally", () => {
+      mockDimensions(375, 1624); // Double height
+      expect(scale.height(100)).toBeCloseTo(150); // Default scaling factor 0.5
     });
 
-    it('should calculate width percentage correctly', () => {
-      expect(widthPercent(50)).toBe(200); // 50% of 400
-      expect(widthPercent(100)).toBe(400);
-      expect(widthPercent(0)).toBe(0);
+    it("should scale fonts with tablet adjustment", () => {
+      mockDimensions(768, 1024); // Tablet size
+      expect(scale.font(16)).toBeGreaterThan(18); // Tablet gets +2 and scaling
+
+      mockDimensions(375, 812); // Phone size
+      expect(scale.font(16)).toBeCloseTo(16 * (375 / 375));
     });
 
-    it('should handle invalid width percentages', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      
-      expect(widthPercent(-10)).toBe(0);
-      expect(widthPercent(150)).toBe(0);
-      
-      expect(consoleSpy).toHaveBeenCalledTimes(2);
-      consoleSpy.mockRestore();
-    });
-
-    it('should calculate height percentage correctly', () => {
-      const available = 800 - 20; // height - statusBar
-      expect(heightPercent(50)).toBe(available * 0.5);
-      expect(heightPercent(100)).toBe(available);
-      expect(heightPercent(0)).toBe(0);
-    });
-
-    it('should handle invalid height percentages', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      
-      expect(heightPercent(-10)).toBe(0);
-      expect(heightPercent(150)).toBe(0);
-      
-      expect(consoleSpy).toHaveBeenCalledTimes(2);
-      consoleSpy.mockRestore();
-    });
-
-    it('should calculate moderate width correctly', () => {
-      // deviceWidth = 400, scale = 400/375 ≈ 1.067
-      const size = 100;
-      const scale = 400 / 375;
-      const expected = size + (scale * size - size) * 0.5;
-      
-      expect(moderateWidth(size)).toBeCloseTo(expected, 2);
-    });
-
-    it('should handle custom factor in moderate width', () => {
-      const size = 100;
-      const factor = 1;
-      const scale = 400 / 375;
-      const expected = size + (scale * size - size) * factor;
-      
-      expect(moderateWidth(size, factor)).toBeCloseTo(expected, 2);
-    });
-
-    it('should handle invalid size in moderate width', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      
-      expect(moderateWidth(-10)).toBe(0);
-      expect(moderateWidth(NaN)).toBe(0);
-      
-      expect(consoleSpy).toHaveBeenCalledTimes(2);
-      consoleSpy.mockRestore();
+    it("should handle percentage scaling", () => {
+      mockDimensions(1000, 1000);
+      expect(scale.widthPercent(50)).toBe(500);
+      expect(scale.heightPercent(25)).toBe(250);
     });
   });
 
-  describe('Scaled Font Size', () => {
-    beforeEach(() => {
-      (Dimensions.get as jest.Mock).mockReturnValue({ width: 375, height: 812 });
-      (DeviceInfo.isTablet as jest.Mock).mockReturnValue(false);
-      (DeviceInfo.hasNotch as jest.Mock).mockReturnValue(false);
+  describe("Spacing System", () => {
+    it("should provide preset spacing values", () => {
+      expect(spacing.xs).toBe(scale.width(4));
+      expect(spacing.sm).toBe(scale.width(8));
+      expect(spacing.md).toBe(scale.width(16));
+      expect(spacing.lg).toBe(scale.width(24));
+      expect(spacing.xl).toBe(scale.width(32));
+      expect(spacing.xxl).toBe(scale.width(48));
     });
 
-    it('should scale font for regular phone correctly', () => {
-      const fontSize = 16;
-      const scale = 375 / 375; // 1
-      const expected = Number((scale * fontSize).toFixed(2));
-      
-      expect(scaledFontSize(fontSize)).toBe(expected);
+    it("should create custom spacing", () => {
+      expect(spacing.custom(3)).toBe(scale.width(12)); // 4 * 3
     });
 
-    it('should add 2px for tablet fonts', () => {
-      (DeviceInfo.isTablet as jest.Mock).mockReturnValue(true);
-      
-      const fontSize = 16;
-      const adjustedFont = fontSize + 2;
-      const available = 812 - 20; // availableHeight
-      const heightScale = (adjustedFont * available) / 812;
-      const expected = Number(heightScale.toFixed(2));
-      
-      expect(scaledFontSize(fontSize)).toBe(expected);
+    it("should handle pixel values", () => {
+      expect(spacing.px(10)).toBe(scale.width(10));
     });
 
-    it('should use height scaling for wide screens', () => {
-      (Dimensions.get as jest.Mock).mockReturnValue({ width: 600, height: 900 });
-      
-      const fontSize = 16;
-      const available = 900 - 20;
-      const heightScale = (fontSize * available) / 812;
-      const expected = Number(heightScale.toFixed(2));
-      
-      expect(scaledFontSize(fontSize)).toBe(expected);
-    });
-
-    it('should handle invalid font sizes', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      
-      expect(scaledFontSize(0)).toBe(14); // fallback
-      expect(scaledFontSize(-5)).toBe(14); // fallback
-      expect(scaledFontSize(NaN)).toBe(14); // fallback
-      
-      expect(consoleSpy).toHaveBeenCalledTimes(3);
-      consoleSpy.mockRestore();
-    });
-
-    it('should use custom base height', () => {
-      const fontSize = 16;
-      const customBase = 1000;
-      const available = 812 - 20;
-      const scale = 375 / 375; // 1 (not tablet, deviceWidth <= 500)
-      const expected = Number((scale * fontSize).toFixed(2));
-      
-      expect(scaledFontSize(fontSize, customBase)).toBe(expected);
+    it("should handle percentage values", () => {
+      mockDimensions(1000, 1000);
+      expect(spacing.percent(10)).toBe(100); // 10% of 1000
     });
   });
 
-  describe('Orientation Changes', () => {
-    it('should update dimensions when orientation changes', () => {
-      // Start with portrait
-      (Dimensions.get as jest.Mock).mockReturnValue({ width: 375, height: 812 });
-      expect(deviceWidth()).toBe(375);
-      expect(deviceHeight()).toBe(812);
-      
-      // Switch to landscape
-      (Dimensions.get as jest.Mock).mockReturnValue({ width: 812, height: 375 });
-      expect(deviceWidth()).toBe(375); // still min
-      expect(deviceHeight()).toBe(812); // still max
+  describe("Typography System", () => {
+    it("should provide preset font sizes", () => {
+      expect(typography.xs).toBe(scale.font(12));
+      expect(typography.sm).toBe(scale.font(14));
+      expect(typography.base).toBe(scale.font(16));
+      expect(typography.lg).toBe(scale.font(18));
+      expect(typography.xl).toBe(scale.font(20));
+      expect(typography.xxl).toBe(scale.font(24));
+      expect(typography.xxxl).toBe(scale.font(32));
+    });
+
+    it("should create custom font sizes", () => {
+      expect(typography.custom(28)).toBe(scale.font(28));
     });
   });
 
-  describe('Responsive Object Aliases and Exports', () => {
-  it('should expose shortcut functions correctly', () => {
-    expect(sw(100)).toBe(scaleWidth(100));
-    expect(sh(100)).toBe(scaleHeight(100));
-    expect(sf(16)).toBe(scaleFont(16));
-    expect(wp(50)).toBe(widthPercentageToDP(50));
-    expect(hp(50)).toBe(heightPercentageToDP(50));
+  describe("Border Radius System", () => {
+    it("should provide preset border radii", () => {
+      expect(borderRadius.none).toBe(0);
+      expect(borderRadius.sm).toBe(scale.width(4));
+      expect(borderRadius.base).toBe(scale.width(8));
+      expect(borderRadius.md).toBe(scale.width(12));
+      expect(borderRadius.lg).toBe(scale.width(16));
+      expect(borderRadius.xl).toBe(scale.width(24));
+      expect(borderRadius.full).toBe(9999);
+    });
+
+    it("should create custom border radii", () => {
+      expect(borderRadius.custom(10)).toBe(scale.width(10));
+    });
   });
 
+  describe("Presets", () => {
+    it("should export presets correctly", () => {
+      expect(presets.spacing).toBe(spacing);
+      expect(presets.fontSize).toBe(typography);
+      expect(presets.borderRadius).toBe(borderRadius);
+    });
   });
 
-  describe('Responsive Object getters', () => {
-  it('should access all getter properties without errors', () => {
-    expect(typeof Responsive.width).toBe('number');
-    expect(typeof Responsive.height).toBe('number');
-    expect(typeof Responsive.pixelRatio).toBe('number');
-    expect(typeof Responsive.isTablet).toBe('boolean');
-    expect(typeof Responsive.hasNotch).toBe('boolean');
-    expect(typeof Responsive.statusBarHeight).toBe('number');
-    expect(typeof Responsive.screenHeight).toBe('number');
+  describe("Utils", () => {
+    it("should create spacing objects", () => {
+      const padding = utils.createSpacing(10, 20, 30, 40);
+      expect(padding).toEqual({
+        paddingTop: spacing.px(10),
+        paddingRight: spacing.px(20),
+        paddingBottom: spacing.px(30),
+        paddingLeft: spacing.px(40),
+      });
+
+      const margin = utils.createMargin(5, 10, 15, 20);
+      expect(margin).toEqual({
+        marginTop: spacing.px(5),
+        marginRight: spacing.px(10),
+        marginBottom: spacing.px(15),
+        marginLeft: spacing.px(20),
+      });
+    });
+
+    it("should create shorthand spacing", () => {
+      const padding = utils.createPadding(10, 20);
+      expect(padding).toEqual({
+        paddingVertical: spacing.px(10),
+        paddingHorizontal: spacing.px(20),
+      });
+
+      const margin = utils.createMarginShorthand(5, 10);
+      expect(margin).toEqual({
+        marginVertical: spacing.px(5),
+        marginHorizontal: spacing.px(10),
+      });
+    });
+
+    it("should detect breakpoints", () => {
+      mockDimensions(480, 800);
+      expect(utils.isBreakpoint("sm")).toBe(true);
+      expect(utils.isBreakpoint("md")).toBe(false);
+
+      mockDimensions(1024, 768);
+      expect(utils.isBreakpoint("lg")).toBe(true);
+      expect(utils.isBreakpoint("xl")).toBe(false);
+    });
+
+    it("should provide orientation styles", () => {
+      mockDimensions(812, 375); // Landscape
+      const landscapeStyles = utils.getOrientationStyles();
+      expect(landscapeStyles.container.flexDirection).toBe("row");
+
+      mockDimensions(375, 812); // Portrait
+      const portraitStyles = utils.getOrientationStyles();
+      expect(portraitStyles.container.flexDirection).toBe("column");
+    });
+  });
+
+  describe("Main Export", () => {
+    it("should export all utilities correctly", () => {
+      expect(Adaptive.screen).toBe(screen);
+      expect(Adaptive.scale).toBe(scale);
+      expect(Adaptive.spacing).toBe(spacing);
+      expect(Adaptive.typography).toBe(typography);
+      expect(Adaptive.borderRadius).toBe(borderRadius);
+      expect(Adaptive.presets).toBe(presets);
+      expect(Adaptive.utils).toBe(utils);
+      expect(Adaptive.init).toBe(initAdaptive);
+      expect(Adaptive.isSSR).toBe(utils.isSSR);
+    });
+  });
+
+// Add these tests to your existing test file
+
+describe('Error Cases', () => {
+
+  it('should handle PixelRatio.get() errors', () => {
+    const originalGet = PixelRatio.get;
+    PixelRatio.get = jest.fn(() => { throw new Error('PixelRatio error'); });
+    
+    // This tests line 76
+    expect(screen.pixelRatio).toBe(1);
+    
+    PixelRatio.get = originalGet;
   });
 });
+
+it('should handle tablet detection errors', () => {
+  (DeviceInfo.isTablet as jest.Mock).mockImplementation(() => {
+    throw new Error('DeviceInfo error');
+  });
+  
+  expect(screen.isTablet).toBe(false);
+});
+
+  // Test the default export
+  it("should export default Adaptive object", () => {
+    expect(Adaptive).toEqual({
+      screen,
+      scale,
+      spacing,
+      typography,
+      borderRadius,
+      presets,
+      utils,
+      init: initAdaptive,
+      isSSR: utils.isSSR,
+    });
+  });
 });

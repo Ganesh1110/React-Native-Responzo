@@ -1,4 +1,4 @@
-// react-native-adaptive - Enhanced API with Flexible Spacing
+// react-native-adaptive - Enhanced API with SSR, Orientation & TypeScript improvements
 
 import { Dimensions, Platform, PixelRatio, StatusBar } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
@@ -13,6 +13,14 @@ export interface AdaptiveConfig {
   spacingBase: number; // Base spacing unit (default: 4)
 }
 
+// Spacing utilities interface
+export interface SpacingUtilities {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
 // Default configuration
 const DEFAULT_CONFIG: AdaptiveConfig = {
   baseWidth: 375,
@@ -25,42 +33,73 @@ const DEFAULT_CONFIG: AdaptiveConfig = {
 let config = { ...DEFAULT_CONFIG };
 
 // Initialize with custom config
-export const initAdaptive = (customConfig: Partial<AdaptiveConfig> = {}) => {
+export const initAdaptive = (customConfig: Partial<AdaptiveConfig> = {}): void => {
   config = { ...DEFAULT_CONFIG, ...customConfig };
 };
 
-// Core dimension utilities
-export const screen = {
-  get width() {
-    return Dimensions.get('window').width;
-  },
-  get height() {
-    return Dimensions.get('window').height;
-  },
-  get isTablet() {
-    return DeviceInfo.isTablet() || this.width >= config.tabletBreakpoint;
-  },
-  get pixelRatio() {
-    return PixelRatio.get();
+// SSR-safe dimension getter
+const getSafeDimensions = () => {
+  // Check if we're in a React Native environment
+  if (typeof Dimensions === 'undefined') {
+    return { width: 375, height: 812 }; // Fallback for SSR
+  }
+  
+  try {
+    return Dimensions.get('window');
+  } catch (error) {
+    // Fallback for SSR or when Dimensions is not available
+    return { width: 375, height: 812 };
   }
 };
 
-// Scaling functions
+// Core dimension utilities with SSR safety
+export const screen = {
+  get width(): number {
+    return getSafeDimensions().width;
+  },
+  get height(): number {
+    return getSafeDimensions().height;
+  },
+  get isTablet(): boolean {
+    try {
+      return DeviceInfo.isTablet() || this.width >= config.tabletBreakpoint;
+    } catch (error) {
+      // Fallback for SSR
+      return this.width >= config.tabletBreakpoint;
+    }
+  },
+  get pixelRatio(): number {
+    try {
+      return PixelRatio.get();
+    } catch (error) {
+      // Fallback for SSR
+      return 1;
+    }
+  },
+  get isLandscape(): boolean {
+    return this.width > this.height;
+  },
+  get isPortrait(): boolean {
+    return this.height > this.width;
+  }
+};
+
+// Scaling functions with precise return types
 export const scale = {
   width: (size: number): number => {
-    const scale = screen.width / config.baseWidth;
-    return size + (scale * size - size) * config.scalingFactor;
+    const scaleRatio = screen.width / config.baseWidth;
+    return size + (scaleRatio * size - size) * config.scalingFactor;
   },
 
   height: (size: number): number => {
-    const scale = screen.height / config.baseHeight;
-    return size + (scale * size - size) * config.scalingFactor;
+    const scaleRatio = screen.height / config.baseHeight;
+    return size + (scaleRatio * size - size) * config.scalingFactor;
   },
 
   font: (size: number): number => {
     const adjustedSize = screen.isTablet ? size + 2 : size;
-    const scale = screen.width / config.baseWidth;
-    return adjustedSize * scale;
+    const scaleRatio = screen.width / config.baseWidth;
+    return adjustedSize * scaleRatio;
   },
 
   widthPercent: (percent: number): number => {
@@ -72,15 +111,15 @@ export const scale = {
   }
 };
 
-// Flexible spacing system
+// Flexible spacing system with precise types
 export const spacing = {
   // Preset values (most commonly used)
-  xs: scale.width(config.spacingBase),     // 4
-  sm: scale.width(config.spacingBase * 2), // 8  
-  md: scale.width(config.spacingBase * 4), // 16
-  lg: scale.width(config.spacingBase * 6), // 24
-  xl: scale.width(config.spacingBase * 8), // 32
-  xxl: scale.width(config.spacingBase * 12), // 48
+  get xs(): number { return scale.width(config.spacingBase); },     // 4
+  get sm(): number { return scale.width(config.spacingBase * 2); }, // 8  
+  get md(): number { return scale.width(config.spacingBase * 4); }, // 16
+  get lg(): number { return scale.width(config.spacingBase * 6); }, // 24
+  get xl(): number { return scale.width(config.spacingBase * 8); }, // 32
+  get xxl(): number { return scale.width(config.spacingBase * 12); }, // 48
 
   // Custom spacing generator - multiply base unit
   custom: (multiplier: number): number => {
@@ -98,15 +137,15 @@ export const spacing = {
   }
 };
 
-// Typography system
+// Typography system with precise types
 export const typography = {
-  xs: scale.font(12),
-  sm: scale.font(14),
-  base: scale.font(16),
-  lg: scale.font(18),
-  xl: scale.font(20),
-  xxl: scale.font(24),
-  xxxl: scale.font(32),
+  get xs(): number { return scale.font(12); },
+  get sm(): number { return scale.font(14); },
+  get base(): number { return scale.font(16); },
+  get lg(): number { return scale.font(18); },
+  get xl(): number { return scale.font(20); },
+  get xxl(): number { return scale.font(24); },
+  get xxxl(): number { return scale.font(32); },
   
   // Custom font scaling
   custom: (size: number): number => {
@@ -114,15 +153,15 @@ export const typography = {
   }
 };
 
-// Border radius system
+// Border radius system with precise types
 export const borderRadius = {
-  none: 0,
-  sm: scale.width(4),
-  base: scale.width(8),
-  md: scale.width(12),
-  lg: scale.width(16),
-  xl: scale.width(24),
-  full: 9999,
+  none: 0 as const,
+  get sm(): number { return scale.width(4); },
+  get base(): number { return scale.width(8); },
+  get md(): number { return scale.width(12); },
+  get lg(): number { return scale.width(16); },
+  get xl(): number { return scale.width(24); },
+  full: 9999 as const,
   
   // Custom border radius
   custom: (radius: number): number => {
@@ -137,14 +176,22 @@ export const presets = {
   borderRadius
 };
 
-// React Hook for reactive dimensions
+// Enhanced React Hook for reactive dimensions with orientation support
 export const useAdaptive = () => {
-  const [dimensions, setDimensions] = useState({
-    width: screen.width,
-    height: screen.height
+  const [dimensions, setDimensions] = useState(() => {
+    const safeDimensions = getSafeDimensions();
+    return {
+      width: safeDimensions.width,
+      height: safeDimensions.height
+    };
   });
 
   useEffect(() => {
+    // Only set up listener if Dimensions is available (not in SSR)
+    if (typeof Dimensions === 'undefined') {
+      return;
+    }
+
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setDimensions({ width: window.width, height: window.height });
     });
@@ -152,47 +199,117 @@ export const useAdaptive = () => {
     return () => subscription?.remove();
   }, []);
 
+  const enhancedScreen = {
+    ...screen,
+    ...dimensions,
+    isLandscape: dimensions.width > dimensions.height,
+    isPortrait: dimensions.height > dimensions.width
+  };
+
   return {
-    screen: { ...screen, ...dimensions },
+    screen: enhancedScreen,
     scale,
     spacing,
     typography,
     borderRadius,
-    presets
+    presets,
+    // Orientation helpers
+    orientation: {
+      isLandscape: enhancedScreen.isLandscape,
+      isPortrait: enhancedScreen.isPortrait,
+      aspectRatio: dimensions.width / dimensions.height
+    }
   };
 };
 
-// Utility functions for common patterns
+// Enhanced utility functions with better typing
 export const utils = {
-  // Create consistent component spacing
-  createSpacing: (top = 0, right = 0, bottom = 0, left = 0) => ({
+  // Create consistent component spacing with typed return
+  createSpacing: (
+    top: number = 0, 
+    right: number = 0, 
+    bottom: number = 0, 
+    left: number = 0
+  ): {
+    paddingTop: number;
+    paddingRight: number;
+    paddingBottom: number;
+    paddingLeft: number;
+  } => ({
     paddingTop: spacing.px(top),
     paddingRight: spacing.px(right),
     paddingBottom: spacing.px(bottom),
     paddingLeft: spacing.px(left)
   }),
 
-  // Create margin spacing
-  createMargin: (top = 0, right = 0, bottom = 0, left = 0) => ({
+  // Create margin spacing with typed return
+  createMargin: (
+    top: number = 0, 
+    right: number = 0, 
+    bottom: number = 0, 
+    left: number = 0
+  ): {
+    marginTop: number;
+    marginRight: number;
+    marginBottom: number;
+    marginLeft: number;
+  } => ({
     marginTop: spacing.px(top),
     marginRight: spacing.px(right),
     marginBottom: spacing.px(bottom),
     marginLeft: spacing.px(left)
   }),
 
-  // Responsive breakpoints
-  isBreakpoint: (breakpoint: 'sm' | 'md' | 'lg' | 'xl') => {
-    const breakpoints = {
+  // Shorthand spacing utilities
+  createPadding: (
+    vertical: number = 0,
+    horizontal: number = 0
+  ): {
+    paddingVertical: number;
+    paddingHorizontal: number;
+  } => ({
+    paddingVertical: spacing.px(vertical),
+    paddingHorizontal: spacing.px(horizontal)
+  }),
+
+  createMarginShorthand: (
+    vertical: number = 0,
+    horizontal: number = 0
+  ): {
+    marginVertical: number;
+    marginHorizontal: number;
+  } => ({
+    marginVertical: spacing.px(vertical),
+    marginHorizontal: spacing.px(horizontal)
+  }),
+
+  // Responsive breakpoints with precise typing
+  isBreakpoint: (breakpoint: 'sm' | 'md' | 'lg' | 'xl'): boolean => {
+    const breakpoints: Record<'sm' | 'md' | 'lg' | 'xl', number> = {
       sm: 480,
       md: 768,
       lg: 1024,
       xl: 1280
     };
     return screen.width >= breakpoints[breakpoint];
+  },
+
+  // Orientation-based utilities
+  getOrientationStyles: () => ({
+    container: {
+      width: screen.width,
+      height: screen.height,
+      flexDirection: screen.isLandscape ? 'row' as const : 'column' as const
+    }
+  }),
+
+  // SSR-safe check
+  isSSR: (): boolean => {
+    return typeof Dimensions === 'undefined' || typeof window === 'undefined';
   }
 };
 
-// Main export object
+// Main export object with enhanced typing
 const Adaptive = {
   screen,
   scale,
@@ -201,7 +318,10 @@ const Adaptive = {
   borderRadius,
   presets,
   utils,
-  init: initAdaptive
-};
+  init: initAdaptive,
+  // Convenience exports
+  // getSafeDimensions,
+  isSSR: utils.isSSR
+} as const;
 
 export default Adaptive;
