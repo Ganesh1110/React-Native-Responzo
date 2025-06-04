@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 
 To see a complete implementation showcasing all features, check out our:
 
-[✨ **Example Showcase** ✨](https://github.com/Ganesh1110/React-Native-Responzo/blob/main/example/ResponzoShowcase.js) _(click to view code)_
+[✨ **Example Showcase** ✨](https://snack.expo.dev/@ganeshvp/responzoshowcase?platform=web) _(click to view code)_
 
 ## 🎛️ Configuration
 
