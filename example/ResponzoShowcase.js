@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: "#3B82F6",
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
     borderRadius: borderRadius.md,
     alignItems: "center",
