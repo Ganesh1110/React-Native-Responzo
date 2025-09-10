@@ -4,12 +4,17 @@
 
 **The Ultimate Adaptive Design System for React Native**
 
-[![npm version](https://img.shields.io/npm/v/react-native-responzo?color=61dafb&logo=npm&logoColor=white)](https://www.npmjs.com/package/@ganesh1011/react-native-responzo)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-supported-blue)]()
-[![JavaScript](https://img.shields.io/badge/JavaScript-supported-yellow)]()
+[![npm version](https://img.shields.io/npm/v/react-native-responzo?color=61dafb&logo=npm&logoColor=white)](https://www.npmjs.com/package/react-native-responzo)
+[![Downloads](https://img.shields.io/npm/dm/react-native-responzo?color=blue&logo=npm&logoColor=white)](https://www.npmjs.com/package/react-native-responzo)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/react-native-responzo?label=size&color=success)](https://bundlephobia.com/package/react-native-responzo)
+[![Test Coverage](https://img.shields.io/badge/tests-100%25-success)](https://github.com/Ganesh1110/React-Native-Responzo/blob/main/__tests__/responsive.test.ts)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-native-blue)](https://www.typescriptlang.org/)
+[![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-blue.svg)](https://reactnative.dev)
+[![Expo](https://img.shields.io/badge/Expo-supported-purple.svg)](https://expo.dev)
 [![SSR Safe](https://img.shields.io/badge/SSR-safe-green)]()
+[![JavaScript](https://img.shields.io/badge/JavaScript-supported-yellow)]()
 
 </div>
 
